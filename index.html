@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BISWAJIT RABHA HACKER STORE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+        * { box-sizing: border-box; }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0a0510; color: #fff;
+            font-family: 'Rajdhani', sans-serif; overflow: hidden;
+        }
+        /* Matrix Background */
+        #matrix { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
+        /* Shared Container Style */
+        .glass-panel {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(18, 10, 35, 0.95);
+            border: 1px solid #a020f0;
+            box-shadow: 0 0 30px rgba(160, 32, 240, 0.4);
+            border-radius: 15px; width: 90%; max-width: 400px;
+            padding: 30px; text-align: center; z-index: 10;
+        }
+        h1, h2 { font-family: 'Orbitron', sans-serif; color: #bc6ff1; margin-bottom: 20px; font-size: 18px; }
+        /* Input Styles */
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+        input, select {
+            width: 100%; padding: 12px; background: #1c1129; border: 1px solid #3d1c5c;
+            color: #fff; border-radius: 8px; outline: none; font-family: 'Rajdhani'; font-size: 16px;
+        }
+        /* Screenshot Style Buttons */
+        .btn-main {
+            width: 100%; padding: 14px; background: linear-gradient(90deg, #8a2be2, #4b0082);
+            border: none; color: white; font-weight: bold; font-family: 'Orbitron';
+            border-radius: 10px; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; margin-top: 10px; box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+        }
+        .btn-main:hover { filter: brightness(1.2); transform: scale(1.02); }
+        /* Dashboard Specifics */
+        #dashboard { display: none; }
+        .key-display {
+            margin-top: 20px; padding: 15px; background: #000; border: 1px dashed #a020f0;
+            color: #00ffcc; font-family: monospace; font-size: 18px; display: none;
+            border-radius: 8px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+        /* Custom Modal for Auth */
+        #auth-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center;
+        }
+        .footer { margin-top: 25px; font-size: 11px; color: #a020f0; letter-spacing: 1px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div id="login-screen" class="glass-panel">
+    <h1>LOCK 🔐 SITE</h1>
+    <div class="input-group">
+        <label>Master Access Key</label>
+        <input type="password" id="master-input" placeholder="••••••••" oninput="typeVoice Biswajit Rabha(this.value)">
+    </div>
+    <button class="btn-main" onclick="checkLogin()">Login System</button>
+    <div class="footer">© COPYRIGHT BY BISWAJIT RABHA</div>
+</div>
+<div id="dashboard" class="glass-panel">
+    <h2>KEY GENERATOR VIP</h2>
+    
+    <div class="input-group">
+        <label>Product Type:</label>
+        <select id="prod-type">
+            <option>Android Device</option>
+            <option>Pc & Laptop</option>
+            <option>iphone & iped</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label>Validity:</label>
+        <select>
+            <option>1 Day</option>
+            <option>3 Day</option>
+            <option>5 Day</option>
+            <option>7 Days</option>
+            <option>10 Days</option>
+            <option>30 Days</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label>Quantity:</label>
+        <input type="number" value="1" min="1">
+    </div>
+    <button class="btn-main" onclick="openGenModal()">⚡ GENERATE KEYS</button>
+    
+    <div id="final-key" class="key-display"></div>
+    <div class="footer">WEBSITE CREATOR: BY BISWAJIT RABHA</div>
+</div>
+<div id="auth-modal">
+    <div class="glass-panel" style="position: relative; top: 0; left: 0; transform: none;">
+        <h2 style="color: #ff0055;">ACCESS REQUIRED</h2>
+        <div class="input-group">
+            <label>Permission Key</label>
+            <input type="password" id="gen-auth-input" placeholder="Enter Key...">
+        </div>
+        <button class="btn-main" onclick="verifyAndGenerate()">AUTHORIZE</button>
+        <button class="btn-main" style="background: #333; margin-top: 10px;" onclick="closeModal()">CANCEL</button>
+    </div>
+</div>
+<script>
+    const synth = window.speechSynthesis;
+    // --- HD Matrix Effect ---
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const chars = "0123456789ABCDEFHG";
+    const fontSize = 14;
+    const drops = Array(Math.floor(canvas.width/fontSize)).fill(1);
+    function draw() {
+        ctx.fillStyle = "rgba(10, 5, 16, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#a020f0"; ctx.font = fontSize + "px monospace";
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random()*chars.length)];
+            ctx.fillText(text, i*fontSize, y*fontSize);
+            if(y*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 35);
+    // --- Voice Logic ---
+    function speak(text) {
+        synth.cancel();
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.rate = 1.0; msg.pitch = 1.0;
+        synth.speak(msg);
+    }
+    function typeVoice(val) {
+        if(val.length > 0) speak(val.charAt(val.length - 1));
+    }
+    // --- Logic ---
+    function checkLogin() {
+        const val = document.getElementById('master-input').value.trim().toUpperCase();
+        if(val === "BISWAJIT RABHA") {
+            speak("Login Successful. Welcome to Biswajit Rabha Hacker private vip site.");
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        } else {
+            speak("Invalid Key. Access Denied.");
+            alert("WRONG YOU KEY, PLEASE CORRECT ENTER KEY!");
+        }
+    }
+    function openGenModal() {
+        document.getElementById('auth-modal').style.display = 'flex';
+        document.getElementById('gen-auth-input').value = '';
+    }
+    function closeModal() {
+        document.getElementById('auth-modal').style.display = 'none';
+    }
+    function verifyAndGenerate() {
+        const auth = document.getElementById('gen-auth-input').value.trim();
+        if(auth === "BISWAJIT RABHA") {
+            const pool = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let code = "";
+            for(let i=0; i<6; i++) code += pool[Math.floor(Math.random()*pool.length)];
+            const newKey = "HG-" + code;
+            
+            document.getElementById('final-key').innerText = newKey;
+            document.getElementById('final-key').style.display = 'block';
+            closeModal();
+            speak("Key Generated. Your Key is " + newKey);
+        } else {
+            speak("Please correct enter key.");
+            alert("INVALID PERMISSION KEY!");
+        }
+    }
+    window.onclick = () => {
+        if(!window.played) {
+            speak("Krishna Devi Store System Active.");
+            window.played = true;
+        }
+    };
+</script>
+</body>
+</html>
